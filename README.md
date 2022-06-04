@@ -1,5 +1,63 @@
 # Shellcode
 
+The shellcode is the the raw coded executed into a machine by a memory exploit. Shellcode is written in assembly, what makes it difficult. It's the most powerful way to do it but it's not practical, hard to code, hard to debug and it's not portable across architectures.
+
+This is an example of some shellcode:
+
+```
+488d35140000006a01586a0c5a4889c70f056a3c5831ff0f05ebfe68656c6c6f20776f726c640a
+```
+
+For understanding it, write it to a file:
+
+```
+$ echo '488d35140000006a01586a0c5a4889c70f056a3c5831ff0f05ebfe68656c6c6f20776f726c640a' > shellcode.bin
+```
+"Disassmbly" the file:
+
+```
+$ objdump -D -b binary -mi386 -Mx86-64 -Mintel shellcode.bin
+```
+
+This will be the final translated output:
+
+```asm
+shellcode.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000000 <.data>:
+   0:	34 38                	xor    al,0x38
+   2:	38 64 33 35          	cmp    BYTE PTR [rbx+rsi*1+0x35],ah
+   6:	31 34 30             	xor    DWORD PTR [rax+rsi*1],esi
+   9:	30 30                	xor    BYTE PTR [rax],dh
+   b:	30 30                	xor    BYTE PTR [rax],dh
+   d:	30 36                	xor    BYTE PTR [rsi],dh
+   f:	61                   	(bad)  
+  10:	30 31                	xor    BYTE PTR [rcx],dh
+  12:	35 38 36 61 30       	xor    eax,0x30613638
+  17:	63 35 61 34 38 38    	movsxd esi,DWORD PTR [rip+0x38383461]        # 0x3838347e
+  1d:	39 63 37             	cmp    DWORD PTR [rbx+0x37],esp
+  20:	30 66 30             	xor    BYTE PTR [rsi+0x30],ah
+  23:	35 36 61 33 63       	xor    eax,0x63336136
+  28:	35 38 33 31 66       	xor    eax,0x66313338
+  2d:	66 30 66 30          	data16 xor BYTE PTR [rsi+0x30],ah
+  31:	35 65 62 66 65       	xor    eax,0x65666265
+  36:	36 38 36             	ss cmp BYTE PTR [rsi],dh
+  39:	35 36 63 36 63       	xor    eax,0x63366336
+  3e:	36 66 32 30          	ss data16 xor dh,BYTE PTR [rax]
+  42:	37                   	(bad)  
+  43:	37                   	(bad)  
+  44:	36 66 37             	ss data16 (bad) 
+  47:	32 36                	xor    dh,BYTE PTR [rsi]
+  49:	63 36                	movsxd esi,DWORD PTR [rsi]
+  4b:	34 30                	xor    al,0x30
+  4d:	61                   	(bad)  
+  4e:	0a                   	.byte 0xa
+```
+
+
 # Reverse TCP
 
 The first thing that we should know is that a reverse TCP shellcode establishes a TCP connection to a server, creates a shell into the victim's computer and redirects the STDOUT functions to the TCP, this allows the attacker to have access into the victim's machine.

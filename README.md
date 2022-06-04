@@ -1,6 +1,6 @@
 # Shellcode
 
-The shellcode is the the raw coded executed into a machine by a memory exploit. Shellcode is written in assembly, what makes it difficult. It's the most powerful way to do it but it's not practical, hard to code, hard to debug and it's not portable across architectures.
+The shellcode is the the raw code executed into a machine by a memory exploit. Shellcode is written in assembly, what makes it hard to understand. It's the most powerful way to do it but it's not practical, hard to code, hard to debug and it's not portable across architectures.
 
 This is an example of some shellcode:
 
